@@ -37,7 +37,8 @@ git clone https://github.com/your-username/tech-care-dashboard.git
 cd tech-care-dashboard
 npm install
 
-##Running the App
+---
+## Running the App
 
 ```bash
 
