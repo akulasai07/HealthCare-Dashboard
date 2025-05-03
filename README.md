@@ -33,16 +33,21 @@ A modern, responsive patient dashboard built with **React**, **Chart.js**, and *
 ### Installation
 
 ```bash
-git clone https://github.com/akulasai07/HealthCare-Dashboard.git
-cd tech-care-dashboard
-npm install
+git clone https://github.com/akulasai07/patient-dashboard.git
+cd  patient-dashboard
+npm install 
+```
 
----
-## Running the App
+##Running the App
 
 ```bash
 
 npm start
 
+```
+
 -This will launch the app on http://localhost:3000
 
+
+## Access the link Here 
+ --- https://graceful-khapse-a360e3.netlify.app/
