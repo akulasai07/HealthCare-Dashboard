@@ -98,11 +98,7 @@ body {
     overflow-y: auto;
   }
   
-  .sidebar-header {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+ 
   
   .patient-list {
     list-style: none;
@@ -185,6 +181,7 @@ body {
     align-items: flex-start;
     gap: 20px;
     flex-wrap: wrap;
+    padding-bottom: 25px;
   }
   
   .chart-container {
@@ -259,7 +256,7 @@ body {
     background: white;
     border-radius: 10px;
     padding: 20px;
-    text-align: center;
+    text-align: left;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -386,4 +383,23 @@ body {
     border-color: #03b6ad;
     box-shadow: 0 0 0 2px rgba(3, 182, 173, 0.2);
   }
+
+  .search-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
   

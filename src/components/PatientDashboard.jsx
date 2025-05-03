@@ -1,84 +1,69 @@
-// PatientDashboard.jsx
-// This component renders the full layout for a patient's dashboard view,
-// including patient selection list, health vitals, diagnostic history, lab results, and profile info.
-
 import React from 'react';
+import '../styles.css';
 import BloodPressureChart from './BloodPressureChart';
 
-const PatientDashboard = ({ patient, patients, onSelect }) => {
-  // Use the first diagnosis entry (typically most recent) for vitals display
-  const diagnosis = patient.diagnosis_history[0];
-
+const PatientDashboard = ({ patient, patients }) => {
   return (
     <div className="dashboard-grid">
-      {/* Left Sidebar: List of all patients */}
+      
+      {/* Sidebar: Displays the list of all patients with profile image and info */}
       <aside className="sidebar">
-        <div className="sidebar-header">Patients</div>
+        <div className="sidebar-header">
+          Patients <span className="search-icon">🔍</span>
+        </div>
         <ul className="patient-list">
-          {patients.map(p => (
-            <li
-              key={p.name}
-              className={p.name === patient.name ? 'selected' : ''}
-              onClick={() => onSelect(p)} // Set selected patient on click
-            >
+          {patients.map((p, index) => (
+            <li key={index} className={p.name === patient.name ? 'selected' : ''}>
               <div className="patient-entry">
-                {/* Patient profile picture and info */}
                 <img src={p.profile_picture} alt={p.name} className="patient-avatar" />
                 <div>
-                  {p.name}<br /><span>{p.gender}, {p.age}</span>
+                  {p.name}<br />
+                  <span>{p.gender}, {p.age}</span>
                 </div>
+                <span className="patient-dots">⋯</span>
               </div>
             </li>
           ))}
         </ul>
       </aside>
 
-      {/* Main Section: Charts, Vitals, Diagnostics, Lab Results */}
+      {/* Main Section: Contains chart, vitals, and diagnostic list */}
       <main className="main-content">
         <div className="header">Diagnosis History</div>
 
-        {/* Blood Pressure Line Chart */}
-        <div className="chart-card">
-          <BloodPressureChart history={patient.diagnosis_history} />
-        </div>
+        {/* Chart showing systolic & diastolic blood pressure trends */}
+        <BloodPressureChart history={patient.diagnosis_history} />
 
-        {/* Vital signs section (Respiratory, Temperature, Heart Rate) */}
+        {/* Vitals Cards: Display key vital stats */}
         <div className="vitals-grid">
           <div className="vital-box blue">
             <div className="label">🫁 Respiratory Rate</div>
-            <img src="https://img.icons8.com/ios/50/lungs.png" alt="lungs" className="vital-icon" />
-            <div className="value">{diagnosis.respiratory_rate.value} bpm</div>
-            <div className="level">{diagnosis.respiratory_rate.levels}</div>
+            <div className="value">{patient.diagnosis_history.at(-1).respiratory_rate.value} bpm</div>
+            <div className="level">{patient.diagnosis_history.at(-1).respiratory_rate.levels}</div>
           </div>
           <div className="vital-box red">
-            <div className="label">🌡️ Temperature</div>
-            <img src="https://img.icons8.com/ios/50/thermometer.png" alt="temperature" className="vital-icon" />
-            <div className="value">{diagnosis.temperature.value}°F</div>
-            <div className="level">{diagnosis.temperature.levels}</div>
+            <div className="label">🌡 Temperature</div>
+            <div className="value">{patient.diagnosis_history.at(-1).temperature.value}°F</div>
+            <div className="level">{patient.diagnosis_history.at(-1).temperature.levels}</div>
           </div>
           <div className="vital-box pink">
             <div className="label">❤️ Heart Rate</div>
-            <img src="https://img.icons8.com/ios/50/heart-with-pulse.png" alt="heart rate" className="vital-icon" />
-            <div className="value">{diagnosis.heart_rate.value} bpm</div>
-            <div className="level">{diagnosis.heart_rate.levels}</div>
+            <div className="value">{patient.diagnosis_history.at(-1).heart_rate.value} bpm</div>
+            <div className="level">{patient.diagnosis_history.at(-1).heart_rate.levels}</div>
           </div>
         </div>
 
-        {/* Diagnostic List Table */}
+        {/* Diagnostic List Table: Display patient diagnosis history */}
         <div className="diagnostic-section">
-          <h3>🧾 Diagnostic List</h3>
+          <h3>Diagnostic List</h3>
           <div className="diagnostic-scroll">
             <table>
               <thead>
-                <tr>
-                  <th>Problem/Diagnosis</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                </tr>
+                <tr><th>Problem/Diagnosis</th><th>Description</th><th>Status</th></tr>
               </thead>
               <tbody>
-                {patient.diagnostic_list.map((item, idx) => (
-                  <tr key={idx}>
+                {patient.diagnostic_list.map((item, index) => (
+                  <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                     <td>{item.status}</td>
@@ -88,34 +73,39 @@ const PatientDashboard = ({ patient, patients, onSelect }) => {
             </table>
           </div>
         </div>
+      </main>
 
-        {/* Lab Results List */}
+      {/* Profile Sidebar: Personal info and lab results */}
+      <aside className="profile-section">
+        {/* Centered profile picture */}
+        <div className="profile-center">
+          <img src={patient.profile_picture} alt={patient.name} className="profile-pic" />
+        </div>
+
+        {/* Patient basic details */}
+        <h2>{patient.name}</h2>
+        <p><span role="img" aria-label="cake">🎂</span> <strong>Date Of Birth</strong><br />{new Date(patient.date_of_birth).toLocaleDateString()}</p>
+        <p><span role="img" aria-label="gender">🧿</span> <strong>Gender</strong><br />{patient.gender}</p>
+        <p><span role="img" aria-label="phone">📞</span> <strong>Contact Info</strong><br />{patient.phone_number}</p>
+        <p><span role="img" aria-label="emergency">🆘</span> <strong>Emergency Contacts</strong><br />{patient.emergency_contact}</p>
+        <p><span role="img" aria-label="insurance">🧾</span> <strong>Insurance Provider</strong><br />{patient.insurance_type}</p>
+
+        {/* Button to show full info */}
+        <button className="info-btn">Show All Information</button>
+
+        {/* Lab Results Section: Scrollable list of tests */}
         <div className="lab-section">
-          <h3>🧪 Lab Results</h3>
+          <h3>Lab Results</h3>
           <div className="lab-scroll">
             <ul>
-              {patient.lab_results.map((result, idx) => (
-                <li key={idx}>
-                  {result} <button className="download-btn">⬇</button>
+              {patient.lab_results.map((item, index) => (
+                <li key={index}>
+                  {item} <button className="download-btn">⬇</button>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-      </main>
-
-      {/* Right Sidebar: Detailed patient profile */}
-      <aside className="profile-section" style={{ textAlign: 'left' }}>
-        <div className="profile-center">
-          <img src={patient.profile_picture} alt={patient.name} className="profile-pic" />
-        </div>
-        <h2>{patient.name}</h2>
-        <p><strong>🎂 Date Of Birth</strong><br />{patient.date_of_birth}</p>
-        <p><strong>🚻 Gender</strong><br />{patient.gender}</p>
-        <p><strong>📞 Contact Info</strong><br />{patient.phone_number}</p>
-        <p><strong>🆘 Emergency Contacts</strong><br />{patient.emergency_contact}</p>
-        <p><strong>🏥 Insurance Provider</strong><br />{patient.insurance_type}</p>
-        <button className="info-btn">Show All Information</button>
       </aside>
     </div>
   );
