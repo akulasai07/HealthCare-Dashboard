@@ -33,7 +33,7 @@ A modern, responsive patient dashboard built with **React**, **Chart.js**, and *
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/tech-care-dashboard.git
+git clone https://github.com/akulasai07/HealthCare-Dashboard.git
 cd tech-care-dashboard
 npm install
 
